@@ -1,6 +1,8 @@
 import React from "react";
 import SearchForm from "@/components/SearchForm";
-import StartupCard from "@/components/StartupCard";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 
 const Home = async ({
   searchParams,
@@ -9,18 +11,10 @@ const Home = async ({
 }) => {
   const query = (await searchParams).query;
 
-  const posts = [
-    {
-      _createedAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: "John Doe" },
-      _id: 1,
-      description: "This is a description.",
-      image: "https://img.unn.ua/img/2025/03/19/1742411457-4633-medium.webp",
-      category: "Robots",
-      title: "We Robots",
-    },
-  ];
+  const posts = await client.fetch(STARTUPS_QUERY);
+
+  console.log(JSON.stringify(posts, null, 2));
+
   return (
     <>
       <section className="pink_container">

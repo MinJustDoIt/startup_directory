@@ -1,8 +1,26 @@
 import React from "react";
 import SearchForm from "@/components/SearchForm";
+import StartupCard from "@/components/StartupCard";
 
-const Home = async ( {searchParams}: {  searchParams: Promise<{ query?: string }>}) => {
+const Home = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string }>;
+}) => {
   const query = (await searchParams).query;
+
+  const posts = [
+    {
+      _createedAt: new Date(),
+      views: 55,
+      author: { _id: 1, name: "John Doe" },
+      _id: 1,
+      description: "This is a description.",
+      image: "https://img.unn.ua/img/2025/03/19/1742411457-4633-medium.webp",
+      category: "Robots",
+      title: "We Robots",
+    },
+  ];
   return (
     <>
       <section className="pink_container">
@@ -10,9 +28,26 @@ const Home = async ( {searchParams}: {  searchParams: Promise<{ query?: string }
           Pitch Your Startup, <br /> Connect With Entrepreneurs
         </h1>
         <p className="sub-heading !max-w-3xl">
-          Submit Ideas, Vote on Pitches, and Get Noticed in Virtual Competitions.
+          Submit Ideas, Vote on Pitches, and Get Noticed in Virtual
+          Competitions.
         </p>
-        <SearchForm query={query}/>
+        <SearchForm query={query} />
+      </section>
+
+      <section className="section_container">
+        <p className="text-30-semibold">
+          {query ? `Search results for "${query}"` : "All Startups"}
+        </p>
+
+        <ul className="mt-7 card_grid">
+          {posts?.length > 0 ? (
+            posts.map((post: StartupTypeCard) => (
+              <StartupCard key={post?._id} post={post} />
+            ))
+          ) : (
+            <p className="no-results">No startups found</p>
+          )}
+        </ul>
       </section>
     </>
   );
